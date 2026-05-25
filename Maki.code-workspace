@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "[ Root ]",
+      "path": "./"
+    },
+    {
+      "name": "[ Desktop App ]",
+      "path": "./DesktopApp"
+    },
+    {
+      "name": "[ Web Verificator ]",
+      "path": "./WebVerificator"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "ms-dotnettools.csharp",
+      "ms-dotnettools.csdevkit",
+      "AvaloniaTeam.vscode-avalonia"
+    ]
+  }
+}
