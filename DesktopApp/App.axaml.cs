@@ -1,8 +1,10 @@
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Somni.Maki.ViewModels;
-using Somni.Maki.Views;
+using Somni.Maki.I18n;
+using Somni.Maki.Windows.Main;
+using MainWindow = Somni.Maki.Windows.Main.MainWindow;
 
 namespace Somni.Maki {
   public class App : Application {
@@ -11,7 +13,9 @@ namespace Somni.Maki {
     }
 
     public override void OnFrameworkInitializationCompleted() {
-      if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
+      Strings.Culture = CultureInfo.CurrentUICulture;
+
+      if(ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) {
         desktop.MainWindow = new MainWindow {
           DataContext = new MainWindowViewModel(),
         };

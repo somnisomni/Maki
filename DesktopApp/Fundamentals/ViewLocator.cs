@@ -16,7 +16,7 @@ namespace Somni.Maki.Fundamentals {
         return null;
       }
 
-      string name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+      string name = param.GetType().FullName!.Replace("ViewModel", "", StringComparison.Ordinal);
       Type? type = Type.GetType(name);
 
       if(type != null) {

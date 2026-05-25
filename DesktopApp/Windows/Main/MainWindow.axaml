@@ -1,0 +1,54 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i18n="clr-namespace:Somni.Maki.I18n"
+        xmlns:mainWindow="clr-namespace:Somni.Maki.Windows.Main"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="450"
+        x:Class="Somni.Maki.Windows.Main.MainWindow"
+        x:DataType="mainWindow:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True"
+        Title="{x:Static i18n:Strings.App_Name}">
+
+    <Design.DataContext>
+        <mainWindow:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                             TintColor="Black"
+                                             TintOpacity="1"
+                                             MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+
+            <Grid ColumnDefinitions="150, *">
+                <Panel Grid.Column="0"
+                       Background="#40000000">
+                    <ListBox ItemsSource="{Binding MainMenuItems}"
+                             SelectedItem="{Binding MainMenuItemSelected}"
+                             Margin="0 32 0 0"
+                             Background="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <ListBoxItem Padding="0">
+                                    <TextBlock Text="{Binding Name}" />
+                                </ListBoxItem>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Panel>
+
+                <TransitioningContentControl Grid.Column="1"
+                                             Padding="16"
+                                             Content="{Binding CurrentPage}" />
+            </Grid>
+        </ExperimentalAcrylicBorder>
+    </Panel>
+</Window>
