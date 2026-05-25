@@ -20,7 +20,7 @@
     </Design.DataContext>
 
     <Panel>
-        <ExperimentalAcrylicBorder>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial BackgroundSource="Digger"
                                              TintColor="Black"
@@ -37,7 +37,8 @@
                              Background="Transparent">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <ListBoxItem Padding="0">
+                                <ListBoxItem Padding="0"
+                                             IsHitTestVisible="False">
                                     <TextBlock Text="{Binding Name}" />
                                 </ListBoxItem>
                             </DataTemplate>
