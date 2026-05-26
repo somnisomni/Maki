@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Somni.Maki.Windows.Main {
+namespace Somni.Maki.GUI.Windows.Main {
   public partial class MainWindow : Window {
     public MainWindow() {
       InitializeComponent();

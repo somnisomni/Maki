@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Somni.Maki.I18n {
+namespace Somni.Maki.GUI.I18n {
     using System;
     
     
@@ -28,7 +28,7 @@ namespace Somni.Maki.I18n {
         public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Somni.Maki.I18n.Strings", typeof(Strings).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Somni.Maki.GUI.I18n.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

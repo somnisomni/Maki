@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish GUI App [All Platforms]" type="CompoundRunConfigurationType">
+    <toRun name="Publish GUI App [Linux ARM64]" type="DotNetFolderPublish" />
+    <toRun name="Publish GUI App [Linux x64]" type="DotNetFolderPublish" />
+    <toRun name="Publish GUI App [Win ARM64]" type="DotNetFolderPublish" />
+    <toRun name="Publish GUI App [Win x64]" type="DotNetFolderPublish" />
+    <toRun name="Publish GUI App [macOS ARM64]" type="DotNetFolderPublish" />
+    <method v="2" />
+  </configuration>
+</component>

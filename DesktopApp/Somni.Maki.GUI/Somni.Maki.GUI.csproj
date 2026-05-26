@@ -7,16 +7,16 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Maki</AssemblyName>
-    <Product>Maki</Product>
-    <ProductName>Maki</ProductName>
+    <AssemblyName>Maki-GUI</AssemblyName>
+    <Product>Maki GUI</Product>
+    <ProductName>Maki GUI</ProductName>
     <PublisherName>somni</PublisherName>
     <Company>somni</Company>
+    <RuntimeIdentifiers>win-x64;win-arm64;osx-arm64;linux-x64;linux-arm64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <PublishTrimmed>true</PublishTrimmed>
-    <PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,5 +46,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Somni.Maki.Core\Somni.Maki.Core.csproj" />
   </ItemGroup>
 </Project>

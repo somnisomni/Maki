@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Somni.Maki.Fundamentals {
+namespace Somni.Maki.GUI.Fundamentals {
   public abstract class ViewModelBase : ObservableObject { }
 }

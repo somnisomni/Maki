@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+
+    <AssemblyName>Somni.Maki.Core</AssemblyName>
+    <Product>Maki Core</Product>
+    <ProductName>Maki Core</ProductName>
+    <PublisherName>somni</PublisherName>
+    <Company>somni</Company>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <PublishTrimmed>true</PublishTrimmed>
+  </PropertyGroup>
+</Project>

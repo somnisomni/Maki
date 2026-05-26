@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Somni.Maki.Fundamentals;
-using Somni.Maki.I18n;
-using Somni.Maki.Pages.AttributeSetupPage;
+using Somni.Maki.GUI.Fundamentals;
+using Somni.Maki.GUI.I18n;
+using Somni.Maki.GUI.Pages.AttributeSetupPage;
 
-namespace Somni.Maki.Windows.Main {
+namespace Somni.Maki.GUI.Windows.Main {
   public record MainMenuItem(string Name, string Icon, Func<ViewModelBase?> CreatePage);
 
   public class MainWindowViewModel : ViewModelBase {

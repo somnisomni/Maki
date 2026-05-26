@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Somni.Maki.Core/Somni.Maki.Core.csproj">
+    <Deploy Solution="Release|*" />
+  </Project>
+  <Project Path="Somni.Maki.GUI\Somni.Maki.GUI.csproj">
+    <Deploy Solution="Release|*" />
+  </Project>
+</Solution>

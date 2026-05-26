@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 
-namespace Somni.Maki.Fundamentals {
+namespace Somni.Maki.GUI.Fundamentals {
   /// <summary>
   ///   Given a view model, returns the corresponding view if possible.
   /// </summary>

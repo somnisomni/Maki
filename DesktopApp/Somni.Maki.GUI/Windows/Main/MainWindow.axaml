@@ -2,13 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i18n="clr-namespace:Somni.Maki.I18n"
-        xmlns:mainWindow="clr-namespace:Somni.Maki.Windows.Main"
+        xmlns:main="clr-namespace:Somni.Maki.GUI.Windows.Main"
+        xmlns:i18n="clr-namespace:Somni.Maki.GUI.I18n"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="450"
-        x:Class="Somni.Maki.Windows.Main.MainWindow"
-        x:DataType="mainWindow:MainWindowViewModel"
+        x:Class="Somni.Maki.GUI.Windows.Main.MainWindow"
+        x:DataType="main:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         TransparencyLevelHint="AcrylicBlur"
         Background="Transparent"
@@ -16,7 +16,7 @@
         Title="{x:Static i18n:Strings.App_Name}">
 
     <Design.DataContext>
-        <mainWindow:MainWindowViewModel />
+        <main:MainWindowViewModel />
     </Design.DataContext>
 
     <Panel>
