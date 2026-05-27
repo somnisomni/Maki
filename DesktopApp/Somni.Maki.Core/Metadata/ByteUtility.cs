@@ -34,6 +34,8 @@ namespace Somni.Maki.Core.Metadata {
     }
 
     public static void WriteGuardedBytes(this BinaryWriter writer, byte[] bytes, int count) {
+      ArgumentOutOfRangeException.ThrowIfGreaterThan(count, bytes.Length);
+
       writer.Write(Constants.VariableStart);
       writer.Write(bytes.ToArray(), 0, count);
       writer.Write(Constants.VariableEnd);

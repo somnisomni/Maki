@@ -1,66 +1,75 @@
 using System.Text;
 
 namespace Somni.Maki.Core.Metadata.Steganography.Versions {
-  public struct SteganoMetadataV1 : IMakiMetadata {
-    public ushort MetadataVersion => 1;
+  public enum SteganoMetadataV1Keys {
+    PixelDataHashLength,
+    PixelDataHash,
+    PixelDataSignatureLength,
+    PixelDataSignature,
+    DataPayloadLength,
+    DataPayload,
+  }
+  
+  public sealed class SteganoMetadataV1 : MakiMetadataBase<SteganoMetadataV1Keys> {
+    public override ushort MetadataVersion => 1;
 
-    public int PixelDataHashLength { get; private set; } = 0;
-    public byte[] PixelDataHash { get; private set; } = [];
-    public int PixelDataSignatureLength { get; private set; } = 0;
-    public byte[] PixelDataSignature { get; private set; } = [];
-    public int DataPayloadLength { get; private set; } = 0;
-    public byte[] DataPayload { get; private set; } = [];
+    protected override Dictionary<SteganoMetadataV1Keys, byte[]> BytesProperties { get; } = new() {
+      { SteganoMetadataV1Keys.PixelDataHash, [ ] },
+      { SteganoMetadataV1Keys.PixelDataSignature, [ ] },
+      { SteganoMetadataV1Keys.DataPayload, [ ] },
+    };
+
+    protected override Dictionary<SteganoMetadataV1Keys, int> Int32Properties { get; } = new() {
+      { SteganoMetadataV1Keys.PixelDataHashLength, 0 },
+      { SteganoMetadataV1Keys.PixelDataSignatureLength, 0 },
+      { SteganoMetadataV1Keys.DataPayloadLength, 0 },
+    };
     
     public SteganoMetadataV1() { }
     public SteganoMetadataV1(string pixelDataHash, ReadOnlySpan<byte> pixelDataSignature, string? dataPayload) {
       if(!string.IsNullOrEmpty(pixelDataHash)) {
-        PixelDataHash = pixelDataHash.GetBytes(out int bytesCount, Encoding.ASCII);
-        PixelDataHashLength = bytesCount;
+        BytesProperties[SteganoMetadataV1Keys.PixelDataHash] = Encoding.ASCII.GetBytes(pixelDataHash);
+        Int32Properties[SteganoMetadataV1Keys.PixelDataHashLength] = Encoding.ASCII.GetByteCount(pixelDataHash);
       }
 
       if(!pixelDataSignature.IsEmpty || pixelDataSignature.Length > 0) {
-        PixelDataSignature = pixelDataSignature.ToArray();
-        PixelDataSignatureLength = pixelDataSignature.Length;
+        BytesProperties[SteganoMetadataV1Keys.PixelDataSignature] = pixelDataSignature.ToArray();
+        Int32Properties[SteganoMetadataV1Keys.PixelDataSignatureLength] = pixelDataSignature.Length;
       }
       
       if(!string.IsNullOrEmpty(dataPayload)) {
-        DataPayload = dataPayload.GetBytes(out int bytesCount);
-        DataPayloadLength = bytesCount;
+        BytesProperties[SteganoMetadataV1Keys.DataPayload] = Encoding.UTF8.GetBytes(dataPayload);
+        Int32Properties[SteganoMetadataV1Keys.DataPayloadLength] = Encoding.UTF8.GetByteCount(dataPayload);
       }
     }
-    
-    public ReadOnlySpan<byte> ToBytes() {
+
+    public override void InitializeFromBytes(ReadOnlySpan<byte> bytes) {
+      using MemoryStream stream = new(bytes.ToArray());
+      using BinaryReader reader = new(stream);
+      
+      int hashLength = Int32Properties[SteganoMetadataV1Keys.PixelDataHashLength] = reader.ReadInt32();            // 4 bytes
+      BytesProperties[SteganoMetadataV1Keys.PixelDataHash] = reader.ReadGuardedBytes(hashLength);                  // 1 byte + Variable + 1 byte
+      int signatureLength = Int32Properties[SteganoMetadataV1Keys.PixelDataSignatureLength] = reader.ReadInt32();  // 4 bytes
+      BytesProperties[SteganoMetadataV1Keys.PixelDataSignature] = reader.ReadGuardedBytes(signatureLength);        // 1 byte + Variable + 1 byte
+      int payloadLength = Int32Properties[SteganoMetadataV1Keys.DataPayloadLength] = reader.ReadInt32();           // 4 bytes
+      BytesProperties[SteganoMetadataV1Keys.DataPayload] = reader.ReadGuardedBytes(payloadLength);                 // 1 byte + Variable + 1 byte
+    }
+
+    public override ReadOnlySpan<byte> ToBytes() {
       using MemoryStream stream = new();
       using BinaryWriter writer = new(stream);
       
-      writer.Write(MetadataVersion);                                            // 2 bytes
-      writer.Write(PixelDataHashLength);                                        // 4 bytes
-      writer.WriteGuardedBytes(PixelDataHash, PixelDataHashLength);             // 1 byte + Variable + 1 byte
-      writer.Write(PixelDataSignatureLength);                                   // 4 bytes
-      writer.WriteGuardedBytes(PixelDataSignature, PixelDataSignatureLength);   // 1 byte + Variable + 1 byte
-      writer.Write(DataPayloadLength);                                          // 4 bytes
-      writer.WriteGuardedBytes(DataPayload, DataPayloadLength);                 // 1 byte + Variable + 1 byte
+      writer.Write(Int32Properties[SteganoMetadataV1Keys.PixelDataHashLength]);       // 4 bytes
+      writer.WriteGuardedBytes(BytesProperties[SteganoMetadataV1Keys.PixelDataHash],
+        Int32Properties[SteganoMetadataV1Keys.PixelDataHashLength]);                  // 1 byte + Variable + 1 byte
+      writer.Write(Int32Properties[SteganoMetadataV1Keys.PixelDataSignatureLength]);  // 4 bytes
+      writer.WriteGuardedBytes(BytesProperties[SteganoMetadataV1Keys.PixelDataSignature],
+        Int32Properties[SteganoMetadataV1Keys.PixelDataSignatureLength]);             // 1 byte + Variable + 1 byte
+      writer.Write(Int32Properties[SteganoMetadataV1Keys.DataPayloadLength]);         // 4 bytes
+      writer.WriteGuardedBytes(BytesProperties[SteganoMetadataV1Keys.DataPayload],
+        Int32Properties[SteganoMetadataV1Keys.DataPayloadLength]);                    // 1 byte + Variable + 1 byte
 
-      return new ReadOnlySpan<byte>(stream.ToArray());
-    }
-    
-    public IMakiMetadata FromBytes(ReadOnlySpan<byte> bytes) {
-      using MemoryStream stream = new(bytes.ToArray());
-      using BinaryReader reader = new(stream);
-
-      ushort version = reader.ReadUInt16();                                    // 2 bytes
-      if(version != MetadataVersion) {
-        throw new ArgumentException($"Metadata version from input bytes is {version}, but tried to parse as version {MetadataVersion}.");
-      }
-
-      PixelDataHashLength = reader.ReadInt32();                                // 4 bytes
-      PixelDataHash = reader.ReadGuardedBytes(PixelDataHashLength);            // 1 byte + Variable + 1 byte
-      PixelDataSignatureLength = reader.ReadInt32();                           // 4 bytes
-      PixelDataSignature = reader.ReadGuardedBytes(PixelDataSignatureLength);  // 1 byte + Variable + 1 byte
-      DataPayloadLength = reader.ReadInt32();                                  // 4 bytes
-      DataPayload = reader.ReadGuardedBytes(DataPayloadLength);                // 1 byte + Variable + 1 byte
-
-      return this;
+      return stream.ToArray();
     }
   }
 }
