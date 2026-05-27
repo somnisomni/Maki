@@ -11,7 +11,7 @@ namespace Somni.Maki.Core.Metadata.Steganography {
       Func<MakiMetadataBase>? metadataInstantiator;
       byte[] remainingBytes;
       
-      using(MemoryStream stream = new(bytes.ToArray())) {
+      using(MemoryStream stream = new(bytes)) {
         using BinaryReader reader = new(stream);
 
         byte[] magic = reader.ReadBytes(Constants.Magic.Length);  // 8 bytes (according to Constants.Magic)
@@ -31,10 +31,18 @@ namespace Somni.Maki.Core.Metadata.Steganography {
         remainingBytes = reader.ReadBytes((int)(stream.Length - stream.Position));
       }
       
-      MakiMetadataBase instance = metadataInstantiator();
-      instance.InitializeFromBytes(remainingBytes);
+      if(remainingBytes.Length <= 0) {
+        throw new InvalidOperationException("No remaining bytes available to parse metadata content.");
+      }
 
-      return instance;
+      try {
+        MakiMetadataBase instance = metadataInstantiator();
+        instance.InitializeFromBytes(remainingBytes);
+
+        return instance;
+      } catch(Exception exception) {
+        throw new InvalidOperationException("Metadata malformed or invalid.", exception);
+      }
     }
     
     public static MakiMetadataBase CreateFromBytes(ReadOnlySpan<byte> bytes) {

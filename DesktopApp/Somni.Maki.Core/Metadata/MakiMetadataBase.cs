@@ -13,7 +13,7 @@ namespace Somni.Maki.Core.Metadata {
     public int GetInt32(int key) => Get<int>(key);
     public ushort GetUInt16(int key) => Get<ushort>(key);
 
-    protected T Get<T>(int key) {
+    protected virtual T Get<T>(int key) {
       IDictionary<int, T>? targetDictionary = typeof(T) switch {
         { } type when type == typeof(byte[]) => BytesProperties as IDictionary<int, T>,
         { } type when type == typeof(int) => Int32Properties as IDictionary<int, T>,
@@ -43,14 +43,14 @@ namespace Somni.Maki.Core.Metadata {
     protected new virtual Dictionary<TKey, ushort> UInt16Properties { get; } = new();
 
     protected MakiMetadataBase() {
-      InitializeBase();
+      UpdateBaseDictionaries();
     }
     
     public ReadOnlySpan<byte> GetBytes(TKey key) => Get<byte[]>(Convert.ToInt32(key));
     public int GetInt32(TKey key) => Get<int>(Convert.ToInt32(key));
     public ushort GetUInt16(TKey key) => Get<ushort>(Convert.ToInt32(key));
 
-    private void InitializeBase() {
+    protected void UpdateBaseDictionaries() {
       base.BytesProperties = BytesProperties.ToDictionary(pair => Convert.ToInt32(pair.Key), pair => pair.Value);
       base.Int32Properties = Int32Properties.ToDictionary(pair => Convert.ToInt32(pair.Key), pair => pair.Value);
       base.UInt16Properties = UInt16Properties.ToDictionary(pair => Convert.ToInt32(pair.Key), pair => pair.Value);

@@ -53,6 +53,8 @@ namespace Somni.Maki.Core.Metadata.Steganography.Versions {
       BytesProperties[SteganoMetadataV1Keys.PixelDataSignature] = reader.ReadGuardedBytes(signatureLength);        // 1 byte + Variable + 1 byte
       int payloadLength = Int32Properties[SteganoMetadataV1Keys.DataPayloadLength] = reader.ReadInt32();           // 4 bytes
       BytesProperties[SteganoMetadataV1Keys.DataPayload] = reader.ReadGuardedBytes(payloadLength);                 // 1 byte + Variable + 1 byte
+      
+      UpdateBaseDictionaries();
     }
 
     public override ReadOnlySpan<byte> ToBytes() {

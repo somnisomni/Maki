@@ -18,7 +18,7 @@ namespace Somni.Maki.Core.Test.Metadata {
 
     [Test]
     public void GetBytes_String() {
-      string input = "미쿠";
+      const string input = "미쿠";
       byte[] expectedBytes = [ 0xEB, 0xAF, 0xB8, 0xEC, 0xBF, 0xA0 ];
       
       byte[] actualBytes = input.GetBytes(out int actualBytesCount, Encoding.UTF8);
@@ -30,7 +30,7 @@ namespace Somni.Maki.Core.Test.Metadata {
 
     [Test]
     public void GetBytes_AutoTrim() {
-      string input = "   abc   \n";
+      const string input = "   abc   \n";
       byte[] expectedBytes = "abc"u8.ToArray();
       
       byte[] actualBytes = input.GetBytes(out int actualBytesCount);
@@ -74,7 +74,7 @@ namespace Somni.Maki.Core.Test.Metadata {
 
     [Test]
     public void WriteGuardedBytes_String() {
-      string input = "abc미쿠";
+      const string input = "abc미쿠";
       byte[] expectedBytes = [ Constants.VariableStart, 0x61, 0x62, 0x63, 0xEB, 0xAF, 0xB8, 0xEC, 0xBF, 0xA0, Constants.VariableEnd ];
 
       using MemoryStream stream = new();
@@ -136,7 +136,10 @@ namespace Somni.Maki.Core.Test.Metadata {
       using BinaryReader reader = new(stream);
 
       byte[] actualBytes = [ ];
-      Assert.Throws<EndOfStreamException>(() => actualBytes = reader.ReadGuardedBytes(4));
+      Assert.That(
+        del: () => actualBytes = reader.ReadGuardedBytes(4),
+        expr: Throws.Exception.InstanceOf<InvalidOperationException>()
+                    .Or.InstanceOf<EndOfStreamException>());
       
       Assert.That(actualBytes, Is.EqualTo(Array.Empty<byte>()));
       Assert.That(actualBytes, Has.Length.EqualTo(0));

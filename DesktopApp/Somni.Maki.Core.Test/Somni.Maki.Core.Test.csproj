@@ -24,8 +24,4 @@
       <ProjectReference Include="..\Somni.Maki.Core\Somni.Maki.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Metadata\Steganography\" />
-    </ItemGroup>
-
 </Project>
