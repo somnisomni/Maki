@@ -67,12 +67,12 @@ namespace Somni.Maki.Core.Test.Metadata.Steganography {
       
       SteganoMetadataV1 metadataV1 = (SteganoMetadataV1)metadata;
       using(Assert.EnterMultipleScope()) {
-        Assert.That(metadataV1.GetInt32(SteganoMetadataV1Keys.PixelDataHashLength), Is.EqualTo(0x03));
-        Assert.That(metadataV1.GetBytes(SteganoMetadataV1Keys.PixelDataHash).ToArray(), Is.EqualTo("ABC"u8.ToArray()));
-        Assert.That(metadataV1.GetInt32(SteganoMetadataV1Keys.PixelDataSignatureLength), Is.EqualTo(0x03));
-        Assert.That(metadataV1.GetBytes(SteganoMetadataV1Keys.PixelDataSignature).ToArray(), Is.EqualTo([ 0xAA, 0xBB, 0xCC ]));
-        Assert.That(metadataV1.GetInt32(SteganoMetadataV1Keys.DataPayloadLength), Is.EqualTo(0x13));
-        Assert.That(metadataV1.GetBytes(SteganoMetadataV1Keys.DataPayload).ToArray(), Is.EqualTo("{ \"success\": true }"u8.ToArray()));
+        Assert.That(metadataV1.Get<int>(SteganoMetadataV1Keys.PixelDataHashLength), Is.EqualTo(0x03));
+        Assert.That(metadataV1.Get<byte[]>(SteganoMetadataV1Keys.PixelDataHash).ToArray(), Is.EqualTo("ABC"u8.ToArray()));
+        Assert.That(metadataV1.Get<int>(SteganoMetadataV1Keys.PixelDataSignatureLength), Is.EqualTo(0x03));
+        Assert.That(metadataV1.Get<byte[]>(SteganoMetadataV1Keys.PixelDataSignature).ToArray(), Is.EqualTo([ 0xAA, 0xBB, 0xCC ]));
+        Assert.That(metadataV1.Get<int>(SteganoMetadataV1Keys.DataPayloadLength), Is.EqualTo(0x13));
+        Assert.That(metadataV1.Get<byte[]>(SteganoMetadataV1Keys.DataPayload).ToArray(), Is.EqualTo("{ \"success\": true }"u8.ToArray()));
       }
     }
   }

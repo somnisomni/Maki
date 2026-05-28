@@ -24,4 +24,8 @@
       <ProjectReference Include="..\Somni.Maki.Core\Somni.Maki.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Include="TestAssets\*" />
+    </ItemGroup>
+
 </Project>

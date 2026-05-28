@@ -4,11 +4,6 @@ namespace Somni.Maki.Core.Random.Algorithms {
   // https://prng.di.unimi.it/xoroshiro128starstar.c
   internal class Xoroshiro128StarStar : IMakiRandomAlgorithm {
     private ulong _state0, _state1;
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static ulong Rotl(ulong x, int k) {
-      return (x << k) | (x >> (64 - k));
-    }
 
     public void SetSeed(ulong seed) {
       _state0 = SplitMix64(ref seed);
@@ -33,6 +28,11 @@ namespace Somni.Maki.Core.Random.Algorithms {
       return (Next() >> 11) * (1.0 / (1UL << 53));
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static ulong Rotl(ulong x, int k) {
+      return (x << k) | (x >> (64 - k));
+    }
+    
     private static ulong SplitMix64(ref ulong state) {
       // https://xoshiro.di.unimi.it/splitmix64.c
       ulong z = (state += 0x9E3779B97F4A7C15UL);

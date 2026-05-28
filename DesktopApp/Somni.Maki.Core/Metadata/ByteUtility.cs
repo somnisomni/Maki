@@ -11,7 +11,7 @@ namespace Somni.Maki.Core.Metadata {
         return [ ];
       }
       
-      byte[] buffer = new byte[input.Length * encoding.GetMaxByteCount(1)];  // Enough space for the buffer
+      byte[] buffer = new byte[input.Length * encoding.GetMaxByteCount(1)];
       if(!encoding.TryGetBytes(input, buffer, out bytesCount) || bytesCount < 0) {
         throw new ArgumentException("Failed to safely encode string to bytes.");
       }
@@ -24,7 +24,7 @@ namespace Somni.Maki.Core.Metadata {
         throw new InvalidOperationException("Expected variable start byte not found.");
       }
 
-      byte[] bytes = reader.ReadBytes(count);
+      byte[] bytes = count > 0 ? reader.ReadBytes(count) : [ ];
 
       if(reader.ReadByte() != Constants.VariableEnd) {
         throw new InvalidOperationException("Expected variable end byte not found.");
