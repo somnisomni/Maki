@@ -13,13 +13,15 @@ namespace Somni.Maki.Core.Random {
 
     private readonly IMakiRandomAlgorithm _algorithm;
 
+    public ulong InitialSeed { get; }
     public ulong CurrentStep { get; private set; } = 0;
     
     public RandomNumberGenerator(ulong? initSeed = null, RandomAlgorithm algorithm = RandomAlgorithm.Xoroshiro128StarStar) {
       initSeed ??= (ulong)DateTime.Now.Ticks ^ (ulong)Environment.ProcessId;
+      InitialSeed = initSeed.Value;
       
       _algorithm = AlgorithmGenerators[algorithm]();
-      _algorithm.SetSeed(initSeed.Value);
+      _algorithm.SetSeed(InitialSeed);
     }
 
     public ulong Next() {

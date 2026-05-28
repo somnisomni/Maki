@@ -29,6 +29,7 @@ namespace Somni.Maki.Core.Random.Algorithms {
     
     public double NextDouble() {
       // Take only 53 bits of random data to fit in the precision of a double-precision floating-point number
+      // The value will be in range between 0.0d ~ 1.0d
       return (Next() >> 11) * (1.0 / (1UL << 53));
     }
 
